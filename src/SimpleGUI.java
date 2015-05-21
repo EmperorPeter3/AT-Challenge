@@ -22,6 +22,7 @@ public class SimpleGUI extends JFrame  {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //vozvrashaet container verhnego yrovnya
         Container container = this.getContentPane();
+//<<<<<<< Updated upstream
         //change GridLayout to GridBagLayout (!) (otvechaet za raspolojenie elementov)
         container.setLayout(new GridLayout(3,2,2,2));
         //add elements
@@ -29,6 +30,14 @@ public class SimpleGUI extends JFrame  {
         container.add(label);
         container.add(input);
         //button group
+//=======
+        container.setLayout(new GridLayout(3, 2, 2, 2));
+
+        //label + text field
+        container.add(label);
+        container.add(input);
+
+//>>>>>>> Stashed changes
         ButtonGroup group = new ButtonGroup();
         group.add(radio1);
         group.add(radio2);
@@ -37,7 +46,11 @@ public class SimpleGUI extends JFrame  {
         container.add(radio2);
         //checkbox
         container.add(check);
+//<<<<<<< Updated upstream
         //button with action
+//=======
+        //
+//>>>>>>> Stashed changes
         button.addActionListener(new ButtonEventListener());
         container.add(button);
     }
