@@ -111,8 +111,8 @@ public class SimpleGUI extends JFrame  {
                 String message = "";
                 message += "Site " + url + " was checked\n";
                 message += "Code: " + code + "; Status: " + description + "\n";
-                message += (radio1.isSelected()?"Radio #1":"Radio #2") + " is selected\n";
-                message += "CheckBox is " + ((check.isSelected())?"checked":"unchecked");
+                message += "Format: " + (radio1.isSelected()?"http://"+url:url)+"\n";
+                message += "Alik " + ((check.isSelected())?"loh":"ne loh");
                 JOptionPane.showMessageDialog(null,
                         message,
                         "Output",

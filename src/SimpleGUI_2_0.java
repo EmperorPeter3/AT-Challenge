@@ -108,9 +108,42 @@ public class SimpleGUI_2_0 extends JFrame  {
 
 
             try {
+                int k=-1;
                 String url = input.getText();
-                String status = getStatus(url);
-                String code = getSiteCode(url);
+                String http1= "http";
+                //String https="https://";
+                k=url.indexOf(http1);
+                String status;
+                String code;
+                String url2;
+                if (k==-1)
+                {
+                    String url1="http://"+url;
+                    status = getStatus(url1);
+                    code = getSiteCode(url1);
+
+                }
+                else {
+                    status = getStatus(url);
+                    code = getSiteCode(url);
+                }
+                //System.out.println(status.matches("301"));
+                //int mmm;
+                if (status.matches("301"))
+                {
+                    if (k!=-1)
+                    {
+                        url2=url.replace("http","https");
+                        status = getStatus(url2);
+                        code = getSiteCode(url2);
+                    }
+                    else
+                    {
+                        url="https://"+ url;
+                        status = getStatus(url);
+                        code = getSiteCode(url);
+                    }
+                }
                 String description = map.get(status);
                 //System.out.println(url + "\t\tCode: " + code + "; Status: " + description);
 
