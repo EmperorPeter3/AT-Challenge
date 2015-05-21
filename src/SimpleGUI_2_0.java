@@ -10,11 +10,7 @@ import javax.swing.*;
 public class SimpleGUI_2_0 extends JFrame  {
     private JButton button = new JButton("Check web-resource");
     private JTextField input = new JTextField("", 2);
-    private JLabel label1 = new JLabel("Web-resource:");
-    private JLabel label2 = new JLabel("Choose format:");
-    private JRadioButton radio1 = new JRadioButton("http://www.example.com");
-    private JRadioButton radio2 = new JRadioButton("www.example.com");
-    private JCheckBox check = new JCheckBox("Alik loh?", true);
+    private JLabel label = new JLabel("Web-resource:");
 
     public SimpleGUI_2_0() {
         super("AT-Challenge");
@@ -39,8 +35,8 @@ public class SimpleGUI_2_0 extends JFrame  {
         a.weightx = 0.0;
         a.weighty = 0.0;
 
-        gbl.setConstraints(label1, a);
-        add(label1);
+        gbl.setConstraints(label, a);
+        add(label);
 
         a.anchor = GridBagConstraints.EAST;
         a.ipadx = 125;
@@ -112,11 +108,7 @@ public class SimpleGUI_2_0 extends JFrame  {
 
 
             try {
-                String url;
-
-                url = (radio1.isSelected() ?  "" : "http://") + input.getText();
-
-
+                String url = input.getText();
                 String status = getStatus(url);
                 String code = getSiteCode(url);
                 String description = map.get(status);
@@ -125,8 +117,7 @@ public class SimpleGUI_2_0 extends JFrame  {
                 String message = "";
                 message += "Site " + url + " was checked\n";
                 message += "Code: " + code + "; Status: " + description + "\n";
-                message += (radio1.isSelected()?"Radio #1":"Radio #2") + " is selected\n";
-                message += "CheckBox is " + ((check.isSelected())?"checked":"unchecked");
+                
                 JOptionPane.showMessageDialog(null,
                         message,
                         "Output",
