@@ -229,7 +229,7 @@ public class SimpleGUI_2_0 extends JFrame  {
 
         try {
             // select Look and Feel
-            UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+            UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
             // start application
             SimpleGUI_2_0 app = new SimpleGUI_2_0();
 
