@@ -6,16 +6,43 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.OceanTheme;
 
 public class SimpleGUI_2_0 extends JFrame  {
+
+    public void initLookAndFeel() {
+        try {
+            //get list of install LaFs:
+            //System.out.println(UIManager.getInstalledLookAndFeels());
+            //install theme: (OceanTheme, DefaultMetalTheme)
+            MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+            // install Look And Feel
+            UIManager.setLookAndFeel(new MetalLookAndFeel());
+
+            //sea glass LaF
+            //UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+            //JTattoo LaF
+            //UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+
+        } catch (UnsupportedLookAndFeelException e) {
+            System.err.println("Can't use the specified look and feel on this platform.");
+        } catch (Exception e) {
+            System.err.println("Couldn't get specified look and feel, for some reason.");
+        }
+    }
+
     private JButton button = new JButton("Check web-resource");
     private JTextField input = new JTextField("", 2);
     private JLabel label = new JLabel("Web-resource:");
 
     public SimpleGUI_2_0() {
+
         super("AT-Challenge");
+
         //setBounds(x,y,w,h) - (x,y) - top left, wide, height
-        this.setBounds(200, 200, 300, 200);
+        this.setBounds(300, 300, 300, 200);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -117,7 +144,7 @@ public class SimpleGUI_2_0 extends JFrame  {
                 String message = "";
                 message += "Site " + url + " was checked\n";
                 message += "Code: " + code + "; Status: " + description + "\n";
-                
+
                 JOptionPane.showMessageDialog(null,
                         message,
                         "Output",
@@ -166,9 +193,18 @@ public class SimpleGUI_2_0 extends JFrame  {
     }
 
     public static void main(String[] args) {
-        SimpleGUI_2_0 app = new SimpleGUI_2_0();
 
-        //show window
-        app.setVisible(true);
+        try {
+            // select Look and Feel
+            UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+            // start application
+            SimpleGUI_2_0 app = new SimpleGUI_2_0();
+
+            //show window
+            app.setVisible(true);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
