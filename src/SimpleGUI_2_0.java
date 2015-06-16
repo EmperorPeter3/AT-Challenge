@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -75,7 +76,7 @@ public class SimpleGUI_2_0 extends JFrame  {
         a.gridwidth  = 1;
         a.gridx = GridBagConstraints.RELATIVE;
         a.gridy = 1;
-        a.insets = new Insets(0, 10, 0, 10); //margin (t l b r)
+        a.insets = new Insets(0, 20, 0, 20); //margin (t l b r)
         a.ipadx = 0; //growth element x
         a.ipady = 0; //growth element y
         a.weightx = 0.0;
@@ -204,8 +205,8 @@ public class SimpleGUI_2_0 extends JFrame  {
                         code = getSiteCode(url);
                     }
                 }
+
                 String description = map.get(status);
-                //System.out.println(url + "\t\tCode: " + code + "; Status: " + description);
 
                 String message = "";
                 message += "Сайт " + url + " проверен\n";
@@ -262,6 +263,8 @@ public class SimpleGUI_2_0 extends JFrame  {
 
     public static void main(String[] args) {
 
+        String subject, subName, url2;
+
         try {
             // select Look and Feel
             UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
@@ -274,5 +277,29 @@ public class SimpleGUI_2_0 extends JFrame  {
         catch (Exception ex) {
             ex.printStackTrace();
         }
+        subject="Область";
+        subName="Московская";
+        url2="moscow.ru";
+        addSite(subject,subName,url2);
     }
+    //Алик
+
+    public static void addSite(String subject, String subName, String url2)
+    {
+        String success=subject;
+        File dir;
+        dir = new File(success);
+        dir.mkdir();
+        success+="/"+subName;
+        dir = new File(success);
+        dir.mkdir();
+        success+="/"+url2+".txt";
+        dir = new File(success);
+        try {
+            dir.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
