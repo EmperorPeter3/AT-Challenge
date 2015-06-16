@@ -1,9 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.*;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Path;
+import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
@@ -277,29 +282,76 @@ public class SimpleGUI_2_0 extends JFrame  {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        subject="Область";
-        subName="Московская";
-        url2="moscow.ru";
+        subject="Край";
+        subName="Приморский";
+        url2="http\\МаксПидор.ru";
         addSite(subject,subName,url2);
     }
     //Алик
 
     public static void addSite(String subject, String subName, String url2)
     {
+        boolean a = false;
         String success=subject;
         File dir;
         dir = new File(success);
-        dir.mkdir();
+        if (!dir.exists())
+        {
+            dir.mkdir();
+        }
+        else
+        {
+
+        }
         success+="/"+subName;
         dir = new File(success);
-        dir.mkdir();
-        success+="/"+url2+".txt";
+        if (!dir.exists())
+        {
+            dir.mkdir();
+
+        }
+        success+="/"+"sites"+".txt";
         dir = new File(success);
         try {
             dir.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        String s="";
+        Scanner scanner=null;
+        try {
+            scanner=new Scanner(new File(success));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        while(scanner.hasNext()){
+            s=scanner.nextLine();
+            if(url2.equals(s)){
+                // found
+                a=true;
+                break;
+            }
+            else {
+                // not found
+                a=false;
+            }
+
+        }
+        if (a==false)
+        {
+            try (FileWriter writer = new FileWriter(success,true))
+            {
+                String siteName=url2;
+                writer.write(siteName);
+                writer.write('\n');
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }
