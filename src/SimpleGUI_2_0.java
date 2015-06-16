@@ -285,7 +285,7 @@ public class SimpleGUI_2_0 extends JFrame  {
         //addSite(subject,subName,url2);
         subject="Край";
         subName="Приморский";
-        url="http://vk.com";
+        url="vk.com";
 
         addSite(subject, subName, url);
         //siteStatus(subject + "/" + subName + "/" +"site.txt",subject+"/"+subName);
@@ -295,6 +295,7 @@ public class SimpleGUI_2_0 extends JFrame  {
     public static void addSite(String subject_of_RF, String subject_name, String url)
     {
         CheckUrl check_this_url = new CheckUrl(url);
+        url = check_this_url.Site;
         if(check_this_url.Code.compareTo("200")>=0 && check_this_url.Code.compareTo("300")<0)
         {
             boolean site_is_contained = false;
