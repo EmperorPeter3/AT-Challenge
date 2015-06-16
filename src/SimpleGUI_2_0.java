@@ -124,18 +124,20 @@ public class SimpleGUI_2_0 extends JFrame  {
     }
 
 
-    class ButtonEventListener implements ActionListener
+    public static class CheckUrl
     {
-        public void actionPerformed(ActionEvent e)
+        public String Site;
+        public String Code;
+        public CheckUrl(String url)
         {
             try
             {
-                String url = input.getText();
+
                 String message = "";
+                String status;
                 if (!url.equals(""))
                 {
                     int http_is_contained = url.indexOf("http");
-                    String status;
                     if (http_is_contained == -1) //в имени нет http
                     {
                         url = "http://" + url;
@@ -166,6 +168,8 @@ public class SimpleGUI_2_0 extends JFrame  {
                             message,
                             "Output",
                             JOptionPane.PLAIN_MESSAGE);
+                    Site=url;
+                    Code=status;
                 }
                 else
                 {
@@ -174,7 +178,9 @@ public class SimpleGUI_2_0 extends JFrame  {
                             message,
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
+                    Code="-1";
                 }
+
             }
             catch(Exception ex)
             {
@@ -183,7 +189,12 @@ public class SimpleGUI_2_0 extends JFrame  {
             }
         }
     }
-
+    class ButtonEventListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            String url = input.getText();
+            CheckUrl chek_this_url = new CheckUrl(url);
+        }
+    }
     public static String getStatus(String url) throws IOException {
 
         String result = "";
@@ -198,23 +209,6 @@ public class SimpleGUI_2_0 extends JFrame  {
             result = Integer.toString(code);
         } catch (Exception e) {
             result = "->Alert code!<-";
-        }
-        return result;
-    }
-    public static String getSiteCode(String url) throws IOException {
-
-        String result = "";
-        try {
-            URL siteURL = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) siteURL
-                    .openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-
-            int code = connection.getResponseCode();
-            result = Integer.toString(code);
-        } catch (Exception e) {
-            result = "->Alert<-";
         }
         return result;
     }
@@ -274,7 +268,7 @@ public class SimpleGUI_2_0 extends JFrame  {
             }
             */
 
-        String subject, subName, url2;
+        String subject, subName, url;
 
         try {
             // select Look and Feel
@@ -289,103 +283,91 @@ public class SimpleGUI_2_0 extends JFrame  {
             ex.printStackTrace();
         }
         //addSite(subject,subName,url2);
-        siteStatus(subject+"/"+subName+"/"+url2+".txt",subject+"/"+subName);
         subject="Край";
         subName="Приморский";
-        url2="http\\МаксПидор.ru";
-        addSite(subject, subName, url2);
+        url="http://vk.com";
+
+        addSite(subject, subName, url);
+        //siteStatus(subject + "/" + subName + "/" +"site.txt",subject+"/"+subName);
     }
     //Алик
 
-    public static void addSite(String subject, String subName, String url2)
+    public static void addSite(String subject_of_RF, String subject_name, String url)
     {
-        boolean a = false;
-        String success=subject;
-        File dir;
-        dir = new File(success);
-        if (!dir.exists())
+        CheckUrl check_this_url = new CheckUrl(url);
+        if(check_this_url.Code.compareTo("200")>=0 && check_this_url.Code.compareTo("300")<0)
         {
-            dir.mkdir();
-        }
-        else
-        {
+            boolean site_is_contained = false;
+            String path_to_file = subject_of_RF;
+            File dir;
+            dir = new File(path_to_file);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            path_to_file += "/" + subject_name;
+            dir = new File(path_to_file);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            String file_name = path_to_file + "/" + "sites" + ".txt";
+            dir = new File(file_name);
+            try {
+                dir.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String temp_string = "";
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(new File(file_name));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            while (scanner.hasNext()) {
+                temp_string = scanner.nextLine();
+                if (url.equals(temp_string)) {
+                    // found
+                    site_is_contained = true;
+                    break;
+                }
+            }
+            if (site_is_contained == false) {
+                try (FileWriter writer = new FileWriter(file_name, true)) {
+                    String siteName = url;
+                    writer.write(siteName);
+                    writer.write('\n');
 
-        }
-        success+="/"+subName;
-        dir = new File(success);
-        if (!dir.exists())
-        {
-            dir.mkdir();
-
-        }
-        success+="/"+"sites"+".txt";
-        dir = new File(success);
-        try {
-            dir.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String site_name = url.replace("http://", "");
+                site_name = site_name.replace("https://", "");
+                dir = new File(path_to_file + "/" + site_name + ".txt");
+                try {
+                    dir.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
-    public static void siteStatus(String sitePath,String beforeSitePath)
-    {
+    public static void siteStatus(String sitePath,String beforeSitePath) {
 
         String s = "";
         File dir;
         Scanner in = null;
         try {
             in = new Scanner(new File(sitePath));
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        while(in.hasNext()) {
+        while (in.hasNext()) {
             s = in.nextLine();
-            dir = new File(beforeSitePath+"/"+s+".txt");
-            try {
-                dir.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
 
         }
-
-
         in.close();
-
-        String s="";
-        Scanner scanner=null;
-        try {
-            scanner=new Scanner(new File(success));
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        while(scanner.hasNext()){
-            s=scanner.nextLine();
-            if(url2.equals(s)){
-                // found
-                a=true;
-                break;
-            }
-            else {
-                // not found
-                a=false;
-            }
-
-        }
-        if (a==false)
-        {
-            try (FileWriter writer = new FileWriter(success,true))
-            {
-                String siteName=url2;
-                writer.write(siteName);
-                writer.write('\n');
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
 }
