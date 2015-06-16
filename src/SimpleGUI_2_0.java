@@ -33,16 +33,28 @@ public class SimpleGUI_2_0 extends JFrame  {
         }
     }
 
-    private JButton button = new JButton("Проверить сайт");
+    private JButton button = new JButton("Проверить регион");
     private JTextField input = new JTextField("", 2);
-    private JLabel label1 = new JLabel("Сайт:");
-    private JLabel label2 = new JLabel("Регион:");
-    String[] items = {
-            "Москва и МО",
-            "Санкт-Петербург и ЛО",
-            "Республика Адыгея"
+    private JLabel label_reg_type = new JLabel("Тип региона:");
+    private JLabel label_reg = new JLabel("Регион:");
+    String[] reg_type_names = {
+            "Край",
+            "Ресублика",
+            "Область",
+            "Город федерального значения",
+            "Автономная область",
+            "Автономный округ"
     };
-    private JComboBox region_list = new JComboBox(items);
+    String[] reg_names = {
+            "Край",
+            "Ресублика",
+            "Область",
+            "Город федерального значения",
+            "Автономная область",
+            "Автономный округ"
+    };
+    private JComboBox reg_type_list = new JComboBox(reg_type_names);
+    private JComboBox reg_list = new JComboBox(reg_names);
 
     public SimpleGUI_2_0() {
 
@@ -69,30 +81,31 @@ public class SimpleGUI_2_0 extends JFrame  {
         a.weightx = 0.0;
         a.weighty = 0.0;
 
-        gbl.setConstraints(label2, a);
-        add(label2);
+        gbl.setConstraints(label_reg_type, a);
+        add(label_reg_type);
 
         a.anchor = GridBagConstraints.EAST;
         a.ipadx = 1;
-        gbl.setConstraints(region_list, a);
-        add(region_list);
+        gbl.setConstraints(reg_type_list, a);
+        add(reg_type_list);
 
-        a.gridy = 2;
+
         a.anchor = GridBagConstraints.WEST;
-        a.ipadx = 0;
-        gbl.setConstraints(label1, a);
-        add(label1);
+        a.gridy = 2;
+        gbl.setConstraints(label_reg, a);
+        add(label_reg);
 
         a.anchor = GridBagConstraints.EAST;
-        a.ipadx = 125;
-        gbl.setConstraints(input, a);
-        add(input);
+        a.ipadx = 1;
+        gbl.setConstraints(reg_list, a);
+        add(reg_list);
 
         button.addActionListener(new ButtonEventListener());
 
         a.gridwidth  = 2;
         a.gridy = 3;
         a.insets = new Insets(20, 10, 0, 10);
+        a.ipadx = 125;
         gbl.setConstraints(button, a);
         add(button);
 
@@ -195,8 +208,10 @@ public class SimpleGUI_2_0 extends JFrame  {
                 //System.out.println(url + "\t\tCode: " + code + "; Status: " + description);
 
                 String message = "";
-                message += "Site " + url + " was checked\n";
-                message += "Code: " + code + "; Status: " + description + "\n";
+                message += "Сайт " + url + " проверен\n";
+                message += "Код: " + code + "; Статус: " + description + "\n";
+
+                //new window with sites
 
                 JOptionPane.showMessageDialog(null,
                         message,
