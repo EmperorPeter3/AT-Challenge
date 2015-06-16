@@ -33,9 +33,16 @@ public class SimpleGUI_2_0 extends JFrame  {
         }
     }
 
-    private JButton button = new JButton("Check web-resource");
+    private JButton button = new JButton("Проверить сайт");
     private JTextField input = new JTextField("", 2);
-    private JLabel label = new JLabel("Web-resource:");
+    private JLabel label1 = new JLabel("Сайт:");
+    private JLabel label2 = new JLabel("Регион:");
+    String[] items = {
+            "Москва и МО",
+            "Санкт-Петербург и ЛО",
+            "Республика Адыгея"
+    };
+    private JComboBox region_list = new JComboBox(items);
 
     public SimpleGUI_2_0() {
 
@@ -62,8 +69,19 @@ public class SimpleGUI_2_0 extends JFrame  {
         a.weightx = 0.0;
         a.weighty = 0.0;
 
-        gbl.setConstraints(label, a);
-        add(label);
+        gbl.setConstraints(label2, a);
+        add(label2);
+
+        a.anchor = GridBagConstraints.EAST;
+        a.ipadx = 1;
+        gbl.setConstraints(region_list, a);
+        add(region_list);
+
+        a.gridy = 2;
+        a.anchor = GridBagConstraints.WEST;
+        a.ipadx = 0;
+        gbl.setConstraints(label1, a);
+        add(label1);
 
         a.anchor = GridBagConstraints.EAST;
         a.ipadx = 125;
@@ -73,10 +91,12 @@ public class SimpleGUI_2_0 extends JFrame  {
         button.addActionListener(new ButtonEventListener());
 
         a.gridwidth  = 2;
-        a.gridy = 2;
+        a.gridy = 3;
         a.insets = new Insets(20, 10, 0, 10);
         gbl.setConstraints(button, a);
         add(button);
+
+
     }
 
     class ButtonEventListener implements ActionListener{
@@ -229,7 +249,7 @@ public class SimpleGUI_2_0 extends JFrame  {
 
         try {
             // select Look and Feel
-            UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
+            UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
             // start application
             SimpleGUI_2_0 app = new SimpleGUI_2_0();
 
