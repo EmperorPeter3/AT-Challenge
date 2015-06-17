@@ -132,11 +132,7 @@ public class SimpleGUI_2_0 extends JFrame  {
         {
             try
             {
-
-                String message = "";
                 String status;
-                if (!url.equals(""))
-                {
                     int http_is_contained = url.indexOf("http");
                     if (http_is_contained == -1) //в имени нет http
                     {
@@ -153,34 +149,11 @@ public class SimpleGUI_2_0 extends JFrame  {
                             if (new_status.equals("200")) {
                                 status = new_status;
                                 url = new_url;
-                                //ДОБАВИТЬ ЗАМЕНУ ИМЕНИ САЙТА В БАЗЕ
                             }
                         }
                     }
-
-                    String description = map.get(status);
-                    message += "Сайт " + url + " проверен\n";
-                    message += "Код: " + status + "\nСтатус: " + description + "\n";
-
-                    //new window with sites
-
-                    JOptionPane.showMessageDialog(null,
-                            message,
-                            "Output",
-                            JOptionPane.PLAIN_MESSAGE);
                     Site=url;
                     Code=status;
-                }
-                else
-                {
-                    message += "Поле не может быть пустым!\n";
-                    JOptionPane.showMessageDialog(null,
-                            message,
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    Code="-1";
-                }
-
             }
             catch(Exception ex)
             {
@@ -192,7 +165,25 @@ public class SimpleGUI_2_0 extends JFrame  {
     class ButtonEventListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             String url = input.getText();
-            CheckUrl chek_this_url = new CheckUrl(url);
+            String message = "";
+            if (!url.equals("")) {
+                CheckUrl check_this_url = new CheckUrl(url);
+                String description = map.get(check_this_url.Code);
+                message += "Сайт " + url + " проверен\n";
+                message += "Код: " + check_this_url.Code + "\nСтатус: " + description + "\n";
+
+                JOptionPane.showMessageDialog(null,
+                        message,
+                        "Output",
+                        JOptionPane.PLAIN_MESSAGE);
+            }
+            else {
+                message += "Поле не может быть пустым!\n";
+                JOptionPane.showMessageDialog(null,
+                        message,
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     public static String getStatus(String url) throws IOException {
