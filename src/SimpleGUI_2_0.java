@@ -62,7 +62,7 @@ public class SimpleGUI_2_0 extends JFrame  {
         super("AT-Challenge");
 
         //setBounds(x,y,w,h) - (x,y) - top left, wide, height
-        this.setBounds(300, 300, 300, 200);
+        this.setBounds(300, 300, 400, 200);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -101,12 +101,20 @@ public class SimpleGUI_2_0 extends JFrame  {
         gbl.setConstraints(reg_list, a);
         add(reg_list);
 
+
+
         button.addActionListener(new ButtonEventListener());
 
-        a.gridwidth  = 2;
+
         a.gridy = 3;
+
+        a.anchor = GridBagConstraints.WEST;
+        gbl.setConstraints(input, a);
+        add(input);
+        a.anchor = GridBagConstraints.EAST;
+        a.gridwidth  = 2;
         a.insets = new Insets(20, 10, 0, 10);
-        a.ipadx = 125;
+        a.ipadx = 25;
         gbl.setConstraints(button, a);
         add(button);
 
@@ -169,15 +177,14 @@ public class SimpleGUI_2_0 extends JFrame  {
 
 
             try {
-                int k=-1;
                 String url = input.getText();
-                String http1= "http";
+                String http_string= "http";
                 //String https="https://";
-                k=url.indexOf(http1);
+                int got_http=url.indexOf(http_string);
                 String status;
                 String code;
                 String url2;
-                if (k==-1)
+                if (got_http==-1)
                 {
                     String url1="http://"+url;
                     status = getStatus(url1);
@@ -192,7 +199,7 @@ public class SimpleGUI_2_0 extends JFrame  {
                 //int mmm;
                 if (status.matches("301"))
                 {
-                    if (k!=-1)
+                    if (got_http!=-1)
                     {
                         url2=url.replace("http","https");
                         status = getStatus(url2);
