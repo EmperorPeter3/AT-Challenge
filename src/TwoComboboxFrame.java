@@ -17,41 +17,69 @@ import java.util.*;
 import java.util.List;
 
 class TwoComboboxFrame extends JFrame {
+    //Map for two ComboBoxes (Lists) 'Region Types' - 'Region Names'
     private Map<String, List<String>> regionNameRegionType = new LinkedHashMap<String, List<String>>();
+    //String array of 'Region names'
     private JComboBox<String> regionNameComboBox;
     private String selectedValue;
 
     public TwoComboboxFrame() {
-        init();
-        buildDataModel();
+        GridBagLayout gbl = new GridBagLayout();    //type of element's composition in form
 
-        JPanel panel = createAndAddPanel(2,2);
-        buildRegionTypeComboBox(panel);
-        buildRegionNameComboBox(panel);
-        createButtonWithInnerForm(panel);
+        init(gbl);                                  //initialize main frame with gbl type
+        buildDataModel();                           //get a data into the map
+        buildRegionTypeComboBox(gbl);               //add a 1st list 'Region Types'
+        buildRegionNameComboBox(gbl);               //add a 2nd list 'Region Names'
+        createButtonWithInnerForm(gbl);             //add a button with inner form
     }
 
-    private void createButtonWithInnerForm(JPanel panel) {
-        JButton button = new JButton("Статистика региона");
-        panel.add(button);
+    private void createButtonWithInnerForm(GridBagLayout gbl) {
+        JButton button = new JButton("Статистика региона"); //init button
 
+        //customise button (element position)
+        GridBagConstraints a = new GridBagConstraints();
+        a.anchor = GridBagConstraints.CENTER;
+        a.fill   = GridBagConstraints.HORIZONTAL;
+        a.gridheight = 1;
+        a.gridwidth  = 1;
+        a.gridx = GridBagConstraints.RELATIVE;
+        a.gridy = 2;
+        a.insets = new Insets(10, 0, 25, 0); //margin (t l b r)
+        a.ipadx = 0; //growth element x
+        a.ipady = 0; //growth element y
+        a.weightx = 0.0;
+        a.weighty = 0.0;
+
+        //assign settings to button (element) then add it to form
+        gbl.setConstraints(button, a);
+        add(button);
+
+        //add action to button : open new frame with inner form
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(selectedValue); // print choosing region type
                 String selectedRegion = (String) regionNameComboBox.getSelectedItem();
                 System.out.println(selectedRegion); // print choosing region name
 
-                JFrame innerForm = new JFrame("Статистика региона " + selectedRegion);
-                JPanel panel = createAndAddPanel(1, 3);
-                innerForm.add(panel);
+                if ((selectedValue == null)||(selectedValue == "Выберите тип субъекта РФ")){
+                    JOptionPane.showMessageDialog(null, "Необходимо указать тип региона", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+                else if (selectedRegion == "Выберите наименование региона") {
+                    JOptionPane.showMessageDialog(null, "Необходимо выбрать регион", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JFrame innerForm = new JFrame("Статистика региона: " + selectedRegion);
+                    //change to GBL!!!
+                    JPanel panel = createAndAddPanel(1, 3);
+                    innerForm.add(panel);
 
-                innerForm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                innerForm.setBounds(300, 300, 600, 150);
-                innerForm.setVisible(true);
+                    innerForm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    innerForm.setBounds(300, 300, 600, 150);
+                    innerForm.setVisible(true);
 
-                createButtonWIthXlExport(panel);
-                createButtonWithChart(panel);
-                createButtonWithEmail(panel);
+                    createButtonWIthXlExport(panel);
+                    createButtonWithChart(panel);
+                    createButtonWithEmail(panel);
+                }
             }
         });
     }
@@ -70,7 +98,7 @@ class TwoComboboxFrame extends JFrame {
                 } catch (IOException ie) {
                     ie.printStackTrace();
                 }
-
+                //frame with info-message
                 JOptionPane.showMessageDialog(null, "Файл " + myExcelFile.getName() + " создан", "Экспорт", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -95,7 +123,7 @@ class TwoComboboxFrame extends JFrame {
                             username,
                             password);
                     //creates the message with empty content
-                    String [] recipients = new String [] {"Kocapb2012@gmail.com", "smok1@inbox.ru", "albert.podusenko@gmail.com", "tokarevroma93@gmail.com"};
+                    String [] recipients = new String [] {"anis-aleksandra@yandex.ru"}; //"Kocapb2012@gmail.com", "smok1@inbox.ru", "albert.podusenko@gmail.com", "tokarevroma93@gmail.com"};
 
                     for (int i=0; i<recipients.length; i++ ) {
                         MimeMessage message = messageSender.createMimeMessage(session,
@@ -111,7 +139,7 @@ class TwoComboboxFrame extends JFrame {
                             "utf-8", "plain");
 
                         //adds the binary file
-                        messageSender.addAttachment(message, new File("./src/sis1.jpg"));
+                        messageSender.addAttachment(message, new File("./src/images/sis1.jpg"));
 
                         //send the message
                         messageSender.sendMimeMessage(message);
@@ -197,7 +225,7 @@ class TwoComboboxFrame extends JFrame {
 
 
                 // Show it setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                JFrame chartFrame = new SwingWrapper(chart).displayChart("График доступности");
+                new SwingWrapper(chart).displayChart("График доступности");
 
                 /* save chart
                 try {
@@ -213,19 +241,55 @@ class TwoComboboxFrame extends JFrame {
         });
     }
 
-    private void buildRegionNameComboBox(JPanel panel) {
+    private void buildRegionNameComboBox(GridBagLayout gbl) {
         regionNameComboBox = new JComboBox<String>();
-        regionNameComboBox.addItem("Выберите наименование региона");
-        panel.add(regionNameComboBox);
+        regionNameComboBox.addItem("Выберите наименование региона"); //1st string in 'Region Names' list
+
+        //customise list (element position)
+        GridBagConstraints a = new GridBagConstraints();
+        a.anchor = GridBagConstraints.CENTER;
+        a.fill   = GridBagConstraints.HORIZONTAL;
+        a.gridheight = 1;
+        a.gridwidth  = 1;
+        a.gridx = GridBagConstraints.RELATIVE;
+        a.gridy = 1;
+        a.insets = new Insets(10, 0, 10, 0); //margin (t l b r)
+        a.ipadx = 0; //growth element x
+        a.ipady = 0; //growth element y
+        a.weightx = 0.0;
+        a.weighty = 0.0;
+
+        //assign settings to list (element) then add it to form
+        gbl.setConstraints(regionNameComboBox, a);
+        add(regionNameComboBox);
     }
 
-    private void buildRegionTypeComboBox(JPanel panel) {
+    private void buildRegionTypeComboBox(GridBagLayout gbl) {
         JComboBox<String> regionType = new JComboBox<String>();
-        regionType.addItem("Выберите тип субъекта РФ");
+        regionType.addItem("Выберите тип субъекта РФ");     //1st string in 'Region Types' list
         for (String value : regionNameRegionType.keySet()) {
-            regionType.addItem(value);
+            regionType.addItem(value);                      //'value' means us names of 'Region Types' (наименования типов регионов)
         }
-        panel.add(regionType);
+
+        //customise list (element position)
+        GridBagConstraints a = new GridBagConstraints();
+        a.anchor = GridBagConstraints.CENTER;
+        a.fill   = GridBagConstraints.HORIZONTAL;
+        a.gridheight = 1;
+        a.gridwidth  = 1;
+        a.gridx = GridBagConstraints.RELATIVE;
+        a.gridy = 0;
+        a.insets = new Insets(25, 0, 10, 0); //margin (t l b r)
+        a.ipadx = 0; //growth element x
+        a.ipady = 0; //growth element y
+        a.weightx = 0.0;
+        a.weighty = 0.0;
+
+        //assign settings to list (element) then add it to form
+        gbl.setConstraints(regionType, a);
+        add(regionType);
+
+        //add action to list : connect two lists (ComboBoxes)
         regionType.addActionListener(new ActionListener() {
             @SuppressWarnings("unchecked")
             @Override
@@ -272,12 +336,13 @@ class TwoComboboxFrame extends JFrame {
                 Arrays.asList("Еврейская АО"));
     }
 
-    private void init() {
+    private void init(GridBagLayout gbl) {
         setTitle("AT-Consulting Challenge");
-        setBounds(300, 300, 600, 150);
+        setBounds(300, 300, 400, 200); //x,y, width,height
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(gbl);
     }
 
     private JPanel createAndAddPanel(int i, int j) {
@@ -290,6 +355,12 @@ class TwoComboboxFrame extends JFrame {
     public static void main(String[] args) throws Exception {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    // select Look and Feel
+                    UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
                 TwoComboboxFrame app = new TwoComboboxFrame();
                  app.setVisible(true);
             }
